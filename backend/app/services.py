@@ -26,7 +26,6 @@ def add_log(
     db.commit()
 
 
-# Старое короткое имя оставлено, чтобы код в main.py читался компактно.
 log = add_log
 
 
@@ -61,7 +60,6 @@ def sorted_queue_query(db: Session):
     )
 
 
-# Имя из первой версии проекта.
 queue_query = sorted_queue_query
 
 

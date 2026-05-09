@@ -1,7 +1,5 @@
 # Система распределения задач между агентами для покупки билетов
 
-Комплект для сдачи: FastAPI + PostgreSQL + WebSocket-агенты + простой пользовательский веб-интерфейс + админ-панель.
-
 ## Запуск
 
 ```bash
@@ -10,19 +8,19 @@ docker compose up --build
 
 После запуска:
 
-- Пользовательский интерфейс: http://localhost:8000/
-- Админ-панель: http://localhost:8000/admin
-- Swagger API: http://localhost:8000/docs
+- Для пользователя: http://localhost:8000/
+- Админка: http://localhost:8000/admin
+- docs: http://localhost:8000/docs
 
-## Тестовые пользователи
+## Креды
 
-- Администратор: `admin` / `admin`
+- Админ: `admin` / `admin`
 - Пользователь: `user` / `user`
 
 ## Что входит
 
-- `backend` - сервер FastAPI, REST API, WebSocket, планировщик, HTML-страницы.
-- `db` - PostgreSQL.
+- `backend` - сервер FastAPI, REST API, WebSocket, планировщик, HTML-страницы. (не заморачивался с распределением по файлам)
+- `db` - PostgreSQL. ну или sqlite
 - `agent_1` ... `agent_5` - пять консольных агентов, подключенных к серверу по WebSocket.
 
 ## Основная логика
