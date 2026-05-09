@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><title>Заявки на покупку билетов</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:30px;background:#f7f7f8;color:#202124} .card{background:#fff;border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 4px 14px #0001} input,select,button{padding:10px;margin:4px;border:1px solid #ddd;border-radius:8px} button{background:#111827;color:white;cursor:pointer} table{width:100%;border-collapse:collapse;background:white} th,td{padding:10px;border-bottom:1px solid #eee;text-align:left} .muted{color:#666;font-size:13px}</style>
+</head>
+<body>
+<h1>Веб-интерфейс пользователя</h1>
+<div class="card">
+  <b>Тестовый вход:</b> user / user<br><span class="muted">После входа можно создать заявку и смотреть только свои заявки.</span>
+</div>
+<div class="card">
+  <h2>Авторизация</h2>
+  <input id="login" value="user"><input id="password" type="password" value="user"><button onclick="auth()">Войти</button>
+</div>
+<div class="card">
+  <h2>Создать заявку</h2>
+  <select id="route_id">{% for r in routes %}<option value="{{r.id}}">{{r.description}}</option>{% endfor %}</select><br>
+  <input id="dates" value="2026-05-10,2026-05-12" size="35" placeholder="YYYY-MM-DD,YYYY-MM-DD"><br>
+  <input id="last_name" value="Иванов"><input id="first_name" value="Иван"><br>
+  <input id="email" value="ivan@example.com"><input id="phone" value="+79991234567"><br>
+  <input id="priority" type="number" value="1" min="1"><button onclick="createTask()">Создать</button>
+</div>
+<div class="card"><h2>Мои заявки</h2><button onclick="loadTasks()">Обновить</button><div id="tasks"></div></div>
+<script>
+let token='';
+async function auth(){let r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:login.value,password:password.value})});let d=await r.json();token=d.access_token;loadTasks();}
+async function createTask(){let body={route_id:+route_id.value,dates:dates.value.split(',').map(x=>x.trim()).filter(Boolean),last_name:last_name.value,first_name:first_name.value,email:email.value,phone:phone.value,user_priority:+priority.value};await fetch('/api/tasks',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(body)});loadTasks();}
+async function cancelTask(id){await fetch('/api/tasks/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+token}});loadTasks();}
+async function loadTasks(){let r=await fetch('/api/tasks',{headers:{'Authorization':'Bearer '+token}});let data=await r.json();tasks.innerHTML='<table><tr><th>ID</th><th>Маршрут</th><th>Даты</th><th>Пассажир</th><th>Статус</th><th>Очередь</th><th>Загрузка дат</th><th>Билет</th><th></th></tr>'+data.map(t=>`<tr><td>${t.id}</td><td>${t.route}</td><td>${t.dates.join('<br>')}</td><td>${t.passenger}</td><td>${t.status}</td><td>${t.queue_position??'-'}</td><td>${Object.entries(t.date_load).map(([k,v])=>k+': '+v).join('<br>')}</td><td>${t.ticket_number??''} ${t.ticket_date??''} ${t.ticket_time??''}</td><td><button onclick="cancelTask(${t.id})">Отменить</button></td></tr>`).join('')+'</table>';}
+</script></body></html>

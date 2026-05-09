@@ -1,0 +1,85 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ticket_db
+    environment:
+      POSTGRES_DB: tickets
+      POSTGRES_USER: tickets
+      POSTGRES_PASSWORD: tickets
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tickets -d tickets"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: ticket_backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://tickets:tickets@db:5432/tickets
+      SECRET_KEY: dev-secret-key
+      SEED_DEMO_DATA: "1"
+      SCHEDULER_INTERVAL_SECONDS: "10"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  agent_1:
+    build: ./agent
+    environment:
+      AGENT_ID: agent_1
+      SERVER_WS_URL: ws://backend:8000/ws/agent
+
+      SUCCESS_PROBABILITY: "0.7"
+      BUY_DELAY_MIN: "0.5"
+      BUY_DELAY_MAX: "8"
+    depends_on: [backend]
+  agent_2:
+    build: ./agent
+    environment:
+      AGENT_ID: agent_2
+      SERVER_WS_URL: ws://backend:8000/ws/agent
+
+      SUCCESS_PROBABILITY: "0.7"
+      BUY_DELAY_MIN: "0.5"
+      BUY_DELAY_MAX: "8"
+    depends_on: [backend]
+  agent_3:
+    build: ./agent
+    environment:
+      AGENT_ID: agent_3
+      SERVER_WS_URL: ws://backend:8000/ws/agent
+
+      SUCCESS_PROBABILITY: "0.7"
+      BUY_DELAY_MIN: "0.5"
+      BUY_DELAY_MAX: "8"
+    depends_on: [backend]
+  agent_4:
+    build: ./agent
+    environment:
+      AGENT_ID: agent_4
+      SERVER_WS_URL: ws://backend:8000/ws/agent
+
+      SUCCESS_PROBABILITY: "0.7"
+      BUY_DELAY_MIN: "0.5"
+      BUY_DELAY_MAX: "8"
+    depends_on: [backend]
+  agent_5:
+    build: ./agent
+    environment:
+      AGENT_ID: agent_5
+      SERVER_WS_URL: ws://backend:8000/ws/agent
+
+      SUCCESS_PROBABILITY: "0.7"
+      BUY_DELAY_MIN: "0.5"
+      BUY_DELAY_MAX: "8"
+    depends_on: [backend]
+
+volumes:
+  pgdata:
