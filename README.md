@@ -41,7 +41,8 @@ docker compose up --build
 4. Вернуться в админку и поменять `admin_priority` у заявки.
 5. Убедиться, что статус заявки меняется: `queued` -> `assigned` -> `completed` или `failed`.
 
-
+   
+## Архитектура
 
 ![alt text](https://github.com/sugato0/ticket_agent_system/blob/main/shema.png)
 
