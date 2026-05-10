@@ -43,5 +43,5 @@ docker compose up --build
 
 
 
-![alt text]([https://raw.githubusercontent.com/username/projectname/commit/img.png](https://github.com/sugato0/ticket_agent_system/blob/main/shema.png))
+![alt text](https://github.com/sugato0/ticket_agent_system/blob/main/shema.png)
 
