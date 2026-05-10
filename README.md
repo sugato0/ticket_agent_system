@@ -40,3 +40,8 @@ docker compose up --build
 3. Открыть `/`, войти как `user/user`, создать заявку.
 4. Вернуться в админку и поменять `admin_priority` у заявки.
 5. Убедиться, что статус заявки меняется: `queued` -> `assigned` -> `completed` или `failed`.
+
+
+
+![alt text]([https://raw.githubusercontent.com/username/projectname/commit/img.png](https://github.com/sugato0/ticket_agent_system/blob/main/%D1%81%D1%85%D0%B5%D0%BC%D0%BA%D0%B0.png))
+
